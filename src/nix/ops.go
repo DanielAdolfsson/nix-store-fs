@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MIT
+
 package nix
 
 import "errors"
@@ -69,12 +71,12 @@ func (c *Connection) GetAllReferences(path string) ([]string, error) {
 		if _, ok := refs[path]; ok {
 			continue
 		}
+		refs[path] = struct{}{}
 		info, err := c.QueryPathInfo(path)
 		if err != nil {
 			return nil, err
 		}
 		for _, ref := range info.References {
-			refs[ref] = struct{}{}
 			queue = append(queue, ref)
 		}
 	}
