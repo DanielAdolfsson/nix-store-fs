@@ -1,4 +1,4 @@
-module go-nix-fs
+module nix-store-fs
 
 go 1.23
 
