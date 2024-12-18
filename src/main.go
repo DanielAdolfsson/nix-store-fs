@@ -8,6 +8,7 @@ import (
 	"go-nix-fs/fs"
 	"go-nix-fs/nix"
 	"log"
+	"os"
 	"path/filepath"
 )
 
@@ -27,7 +28,8 @@ func main() {
 	flag.Parse()
 
 	if flag.NArg() != 2 {
-		log.Fatalln("Usage:\nnix-fs DERIVATION MOUNTPOINT")
+		_, _ = os.Stderr.WriteString("Usage:\nnix-store-fs [options] <item> <mountpoint>")
+		os.Exit(1)
 	}
 
 	derivation := flag.Arg(0)
@@ -55,6 +57,8 @@ func main() {
 	for _, ref := range refs {
 		fileSystem.Allow(ref[11:])
 	}
+
+	opts.AllowOther = true
 
 	server, err := fusefs.Mount(mountPoint, fileSystem.RootNode(), &opts)
 	if err != nil {
