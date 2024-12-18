@@ -5,9 +5,9 @@ package main
 import (
 	"flag"
 	fusefs "github.com/hanwen/go-fuse/v2/fs"
-	"go-nix-fs/fs"
-	"go-nix-fs/nix"
 	"log"
+	"nix-store-fs/fs"
+	"nix-store-fs/nix"
 	"os"
 	"path/filepath"
 )
