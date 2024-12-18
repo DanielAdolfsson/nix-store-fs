@@ -46,8 +46,8 @@ func main() {
 	}
 
 	var opts fusefs.Options
-	opts.FsName = "derivation: " + derivation
-	opts.Name = "nixfs"
+	opts.FsName = "nix: " + derivation
+	opts.Name = "nix-store-fs"
 
 	fileSystem, err := fs.NewFileSystem(*storePath)
 	if err != nil {
