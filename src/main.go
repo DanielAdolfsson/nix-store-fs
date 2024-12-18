@@ -62,6 +62,8 @@ func main() {
 
 	opts.AllowOther = true
 
+	println("mounting: ", mountPoint)
+
 	server, err := fusefs.Mount(mountPoint, fileSystem.RootNode(), &opts)
 	if err != nil {
 		log.Fatalln(err)
@@ -72,8 +74,11 @@ func main() {
 	signal.Notify(c, os.Interrupt, syscall.SIGTERM)
 	go func() {
 		<-c
+		println("SIGTERM: unmounting: ", mountPoint)
 		_ = server.Unmount()
 	}()
 
 	server.Wait()
+
+	println("fini")
 }
