@@ -8,9 +8,9 @@
 - Grants read-only access based on specified paths.
 - Automatically resolves paths using the Nix daemon.
 
-## Installation
+## Building
 
-To install `go-nix-fs`, use the following commands:
+To build `nix-store-fs`, use the following commands:
 
 ```sh
 git clone https://github.com/DanielAdolfsson/nix-store-fs.git
@@ -31,7 +31,7 @@ Replace `<item>` with a name that exists in `/nix/store`, and `<mountpoint>` wit
 ## Example
 
 ```sh
-./go-nix-fs wlwyqvdalg32pdf20klxndhhqmra9mmh-bash-interactive-5.2p37 /mnt/nix-view
+$ ./go-nix-fs wlwyqvdalg32pdf20klxndhhqmra9mmh-bash-interactive-5.2p37 /mnt/nix-view
 
 $ ls -1 /mnt/nix-view
 1ci7cipl06rf3c8cr7vz2zzr36wpxms1-glibc-2.40-36
@@ -57,4 +57,3 @@ $ nix path-info --recursive /nix/store/wlwyqvdalg32pdf20klxndhhqmra9mmh-bash-int
 - `-daemon-socket-path`: Path to the Nix daemon socket (default `/nix/var/nix/daemon-socket/socket`).
 - `-store-path`: Path to the Nix store (default `/nix/store`).
 
-```
