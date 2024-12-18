@@ -11,31 +11,30 @@ import (
 )
 
 func (n *Node) Lookup(ctx context.Context, name string, out *fuse.EntryOut) (*fs.Inode, syscall.Errno) {
-	p := filepath.Join(n.Path(nil), name)
-	if !n.fileSystem.CheckAccess(p) {
+	if !n.fileSystem.CheckAccess(filepath.Join(n.Path(nil), name)) {
 		return nil, syscall.ENOENT
 	}
 	return n.LoopbackNode.Lookup(ctx, name, out)
 }
 
 func (n *Node) Mknod(context.Context, string, uint32, uint32, *fuse.EntryOut) (*fs.Inode, syscall.Errno) {
-	return nil, syscall.EACCES
+	return nil, syscall.ENOTSUP
 }
 
 func (n *Node) Mkdir(context.Context, string, uint32, *fuse.EntryOut) (*fs.Inode, syscall.Errno) {
-	return nil, syscall.EACCES
+	return nil, syscall.ENOTSUP
 }
 
 func (n *Node) Rmdir(context.Context, string) syscall.Errno {
-	return syscall.EACCES
+	return syscall.ENOTSUP
 }
 
 func (n *Node) Unlink(context.Context, string) syscall.Errno {
-	return syscall.EACCES
+	return syscall.ENOTSUP
 }
 
 func (n *Node) Rename(context.Context, string, fs.InodeEmbedder, string, uint32) syscall.Errno {
-	return syscall.EACCES
+	return syscall.ENOTSUP
 }
 
 func (n *Node) Create(ctx context.Context, name string, flags uint32, mode uint32, out *fuse.EntryOut) (*fs.Inode, fs.FileHandle, uint32, syscall.Errno) {
@@ -43,17 +42,17 @@ func (n *Node) Create(ctx context.Context, name string, flags uint32, mode uint3
 		return nil, nil, 0, syscall.ENOENT
 	}
 	if flags&syscall.O_ACCMODE != syscall.O_RDONLY {
-		return nil, nil, 0, syscall.EACCES
+		return nil, nil, 0, syscall.ENOTSUP
 	}
 	return n.LoopbackNode.Create(ctx, name, flags, mode, out)
 }
 
 func (n *Node) Symlink(context.Context, string, string, *fuse.EntryOut) (*fs.Inode, syscall.Errno) {
-	return nil, syscall.EACCES
+	return nil, syscall.ENOTSUP
 }
 
 func (n *Node) Link(context.Context, fs.InodeEmbedder, string, *fuse.EntryOut) (*fs.Inode, syscall.Errno) {
-	return nil, syscall.EACCES
+	return nil, syscall.ENOTSUP
 }
 
 func (n *Node) Readlink(ctx context.Context) ([]byte, syscall.Errno) {
@@ -68,7 +67,7 @@ func (n *Node) Open(ctx context.Context, flags uint32) (fh fs.FileHandle, fuseFl
 		return nil, 0, syscall.ENOENT
 	}
 	if flags&syscall.O_ACCMODE != syscall.O_RDONLY {
-		return nil, 0, syscall.EACCES
+		return nil, 0, syscall.ENOTSUP
 	}
 	return n.LoopbackNode.Open(ctx, flags)
 }
@@ -99,7 +98,7 @@ func (n *Node) Getattr(ctx context.Context, f fs.FileHandle, out *fuse.AttrOut) 
 }
 
 func (n *Node) Setattr(context.Context, fs.FileHandle, *fuse.SetAttrIn, *fuse.AttrOut) syscall.Errno {
-	return syscall.EACCES
+	return syscall.ENOTSUP
 }
 
 func (n *Node) Getxattr(ctx context.Context, attr string, dest []byte) (uint32, syscall.Errno) {
@@ -110,16 +109,16 @@ func (n *Node) Getxattr(ctx context.Context, attr string, dest []byte) (uint32, 
 }
 
 func (n *Node) Setxattr(context.Context, string, []byte, uint32) syscall.Errno {
-	return syscall.EACCES
+	return syscall.ENOTSUP
 }
 
 func (n *Node) Removexattr(context.Context, string) syscall.Errno {
-	return syscall.EACCES
+	return syscall.ENOTSUP
 }
 
 func (n *Node) CopyFileRange(
 	context.Context, fs.FileHandle, uint64, *fs.Inode,
 	fs.FileHandle, uint64, uint64, uint64,
 ) (uint32, syscall.Errno) {
-	return 0, syscall.EACCES
+	return 0, syscall.ENOTSUP
 }
