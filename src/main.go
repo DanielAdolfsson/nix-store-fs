@@ -30,7 +30,7 @@ func main() {
 	flag.Parse()
 
 	if flag.NArg() != 2 {
-		_, _ = os.Stderr.WriteString("Usage:\nnix-store-fs [options] <item> <mountpoint>")
+		_, _ = os.Stderr.WriteString("Usage:\n  nix-store-fs [options] <item> <mountpoint>\n\n")
 		os.Exit(1)
 	}
 
@@ -62,7 +62,7 @@ func main() {
 
 	opts.AllowOther = true
 
-	println("mounting: ", mountPoint)
+	log.Println("Mounting at", mountPoint)
 
 	server, err := fusefs.Mount(mountPoint, fileSystem.RootNode(), &opts)
 	if err != nil {
@@ -74,11 +74,10 @@ func main() {
 	signal.Notify(c, os.Interrupt, syscall.SIGTERM)
 	go func() {
 		<-c
-		println("SIGTERM: unmounting: ", mountPoint)
+		log.Println("Received SIGTERM; unmounting...")
 		_ = server.Unmount()
 	}()
 
 	server.Wait()
-
-	println("fini")
+	log.Println("Bye")
 }
