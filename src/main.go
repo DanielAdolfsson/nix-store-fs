@@ -9,7 +9,9 @@ import (
 	"nix-store-fs/fs"
 	"nix-store-fs/nix"
 	"os"
+	"os/signal"
 	"path/filepath"
+	"syscall"
 )
 
 func main() {
@@ -64,6 +66,14 @@ func main() {
 	if err != nil {
 		log.Fatalln(err)
 	}
+
+	// Unmount if the program is terminated.
+	c := make(chan os.Signal)
+	signal.Notify(c, os.Interrupt, syscall.SIGTERM)
+	go func() {
+		<-c
+		_ = server.Unmount()
+	}()
 
 	server.Wait()
 }
